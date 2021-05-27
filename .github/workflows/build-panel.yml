@@ -37,9 +37,6 @@ jobs:
           ccache --set-config compression=true
           ccache --set-config max_size=1G
           ccache -s
-          
-      - name: Debugging with tmate
-        uses: mxschmitt/action-tmate@v3.5
         
       - name: Install Qt
         run: |
