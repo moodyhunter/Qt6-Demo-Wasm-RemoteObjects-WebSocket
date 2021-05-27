@@ -39,7 +39,7 @@ jobs:
           ccache -s
         
       - name: extract Qt
-        run:
+        run: |
           mkdir -p /home/runner/work/QtSnapshot/QtSnapshot
           curl -L https://github.com/moodyhunter/QtSnapshot/releases/download/qt-dev/qt-host.7z -o qt-host.7z
           curl -L https://github.com/moodyhunter/QtSnapshot/releases/download/qt-dev/qt-wasm.7z -o qt-wasm.7z
