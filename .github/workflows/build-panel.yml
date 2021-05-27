@@ -41,9 +41,9 @@ jobs:
       - name: Install Qt
         run: |
           sudo apt install libb2-dev libdouble-conversion-dev libdouble-conversion-dev libb2-dev libx11-dev libegl-dev \
-                           libopengl-dev libts-dev libmtdev-dev libinput-dev libxcb1-dev libxcb-dev libx11-xcb-dev \
-                           libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-render-util0-dev libxcb-randr0-dev \
-                           libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev
+                           libopengl-dev libts-dev libmtdev-dev libinput-dev libxcb1-dev libx11-xcb-dev libxcb-icccm4-dev \
+                           libxcb-image0-dev libxcb-keysyms1-dev libxcb-render-util0-dev libxcb-randr0-dev libxcb-xkb-dev \
+                           libxkbcommon-dev libxkbcommon-x11-dev
           mkdir -p /home/runner/work/QtSnapshot/QtSnapshot
           curl -L https://github.com/moodyhunter/QtSnapshot/releases/download/qt-dev/qt-host.7z -o qt-host.7z
           curl -L https://github.com/moodyhunter/QtSnapshot/releases/download/qt-dev/qt-wasm.7z -o qt-wasm.7z
