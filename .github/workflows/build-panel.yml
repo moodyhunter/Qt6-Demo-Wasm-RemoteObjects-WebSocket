@@ -4,6 +4,10 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  QT_PATH: '/home/runner/work/QtSnapshot/QtSnapshot/wasm-installed'
+  EMSDK_PATH: '/home/runner/work/QtSnapshot/QtSnapshot/emsdk'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,7 +35,7 @@ jobs:
       - name: configure ccache
         run: |
           sudo apt update
-          sudo apt install -y ccache
+          sudo apt install -y ccache ninja-build
           ccache --set-config sloppiness=file_macro,time_macros
           ccache --set-config cache_dir='${{ runner.temp }}'/ccache
           ccache --set-config compression=true
@@ -50,3 +54,38 @@ jobs:
           7z x -o/home/runner/work/QtSnapshot/QtSnapshot ./qt-host.7z
           7z x -o/home/runner/work/QtSnapshot/QtSnapshot ./qt-wasm.7z
           /home/runner/work/QtSnapshot/QtSnapshot/wasm-installed/bin/qmake --version
+
+      - name: Setup emscripten
+        run: |
+          git clone https://github.com/emscripten-core/emsdk --recursive $EMSDK_PATH
+          $EMSDK_PATH/emsdk install 2.0.14
+          $EMSDK_PATH/emsdk activate 2.0.14 --permanent
+      
+      - name: Build Panel
+        run: |
+          source $EMSDK_PATH/emsdk_env.sh
+          mkdir build && cd build
+          $QT_PATH/bin/qt-cmake .. -GNinja \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --parallel $(nproc)
+      - name: ccache Statistics
+        run: ccache -s
+          
+      - name: Deploy
+        run: |
+          mkdir deployment
+          cp -v ./build/*.js ./deployment
+          cp -v ./build/*.wasm ./deployment
+          cp -v ./build/*.html ./deployment
+          cp -v ./build/*.svg ./deployment
+
+      - name: GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v2.4.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          target_branch: gh-pages
+          build_dir: deployment/
+          fqdn: remote.demo.mooody.me
