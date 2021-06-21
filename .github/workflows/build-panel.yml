@@ -88,4 +88,4 @@ jobs:
         with:
           target_branch: gh-pages
           build_dir: deployment/
-          fqdn: remote.demo.mooody.me
+          fqdn: qtro-demo.mooody.me
