@@ -1,0 +1,11 @@
+#include <CustomType.hpp>
+
+class MyType
+{
+    // PROP/CLASS/MODEL/SIGNAL/SLOT/ENUM declarations to define your API
+    PROP(bool somebool = false)
+    PROP(QString string)
+    SIGNAL(onSignal(const QMap<QString, QStringList> &map))
+    SLOT(void test())
+    PROP(CustomType customtype)
+};
